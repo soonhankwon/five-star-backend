@@ -10,5 +10,5 @@ import lombok.Getter;
 public final class UserResignResDto {
 
     @Schema(description = "탈퇴 성공 메세지", example = "회원탈퇴 완료")
-    private String message;
+    private final String message = "회원탈퇴 완료";
 }

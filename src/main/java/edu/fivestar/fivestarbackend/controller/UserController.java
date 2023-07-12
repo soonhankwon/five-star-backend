@@ -13,26 +13,27 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "유저 API")
+@RequestMapping("/users")
+@Tag(name = "유저 관련 API")
 public class UserController {
 
     private final UserService userServiceImpl;
 
-    @PostMapping("/users/signup")
-    @Operation(summary = "회원 가입")
+    @PostMapping("/signup")
+    @Operation(summary = "회원 가입 API")
     @ResponseStatus(HttpStatus.CREATED)
     public UserSignupResDto signupUser(@RequestBody UserSignupReqDto dto) {
         userServiceImpl.signupUser(dto);
-        return new UserSignupResDto("회원가입 완료");
+        return new UserSignupResDto();
     }
 
     // TODO LOGIN & LOGOUT API
 
-    @DeleteMapping("/users/resign")
-    @Operation(summary = "회원 탈퇴")
+    @DeleteMapping("/resign")
+    @Operation(summary = "회원 탈퇴 API")
     @ResponseStatus(HttpStatus.OK)
     public UserResignResDto resignUser(@RequestBody UserResignReqDto dto) {
         userServiceImpl.resignUser(dto);
-        return new UserResignResDto("회원탈퇴 완료");
+        return new UserResignResDto();
     }
 }

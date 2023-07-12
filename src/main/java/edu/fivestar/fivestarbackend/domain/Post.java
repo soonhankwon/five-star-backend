@@ -1,5 +1,8 @@
 package edu.fivestar.fivestarbackend.domain;
 
+import edu.fivestar.fivestarbackend.dto.PostCreateReqDto;
+import edu.fivestar.fivestarbackend.dto.PostUpdateReqDto;
+import edu.fivestar.fivestarbackend.dto.UserPostGetResDto;
 import edu.fivestar.fivestarbackend.util.BaseTimeEntity;
 import lombok.NoArgsConstructor;
 
@@ -19,4 +22,23 @@ public class Post extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public Post(PostCreateReqDto dto, User user) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.user = user;
+    }
+
+    public UserPostGetResDto createUserPostGetResDto() {
+        return new UserPostGetResDto(this.id, this.title, this.content, this.getCreatedAt(), this.getModifiedAt());
+    }
+
+    public void update(PostUpdateReqDto dto) {
+        if(dto.getTitle() == null || dto.getTitle().isEmpty()) {
+            this.content = dto.getContent();
+        } else {
+            this.title = dto.getTitle();
+            this.content = dto.getContent();
+        }
+    }
 }

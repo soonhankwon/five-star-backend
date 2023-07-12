@@ -10,5 +10,5 @@ import lombok.Getter;
 public final class UserSignupResDto {
 
     @Schema(description = "가입 성공 메세지", example = "회원가입 완료")
-    private final String message;
+    private final String message = "회원가입 완료";
 }

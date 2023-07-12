@@ -34,11 +34,9 @@ public class Post extends BaseTimeEntity {
     }
 
     public void update(PostUpdateReqDto dto) {
-        if(dto.getTitle() == null || dto.getTitle().isEmpty()) {
-            this.content = dto.getContent();
-        } else {
+        if (dto.getTitle() != null && !dto.getTitle().isEmpty()) {
             this.title = dto.getTitle();
-            this.content = dto.getContent();
         }
+        this.content = dto.getContent();
     }
 }

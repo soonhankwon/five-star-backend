@@ -1,0 +1,98 @@
+name: Spring Boot & Gradle & Docker & EC2 CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 기본 체크아웃
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # JDK version 설정
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          
+      # Gradle Caching
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-   
+            
+      # main 설정 파일 생성 및 write
+      - name: Set .properties for main
+        run: |
+          # main 설정 파일 디렉토리로 이동
+          cd ./src/main/resources
+          touch ./application.properties
+          echo "${{ secrets.APPLICATION }}" >> ./application.properties
+        shell: bash
+
+      # Gradle build
+      - name: Build with Gradle
+        run: ./gradlew bootJar
+
+      # Spring 어플리케이션 Docker Image 빌드
+      - name: Build Docker Image For Spring
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/san-monkey .
+          docker push ${{ secrets.DOCKER_USERNAME }}/san-monkey
+
+      # 서버에서 Docker 이미지 실행
+      - name: EC2 Docker Run
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/san-monkey
+            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/san-monkey
+            sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+
+      - name: EC2 Docker Cleanup
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            # Stop and remove all stopped containers
+            sudo docker stop $(sudo docker ps -q --filter "status=exited")
+            sudo docker rm $(sudo docker ps -q --filter "status=exited")
+
+            # Remove all unused images
+            sudo docker image prune -a -f
+
+#   Slack-Notification:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Slack Notification
+#         uses: rtCamp/action-slack-notify@v2.0.0
+#         env:
+#           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+#         with:
+#           status: ${{ job.status }}
+#           fields: repo,commit,message,author
+#           mention: here
+#           if_mention: failure,cancelled

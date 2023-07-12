@@ -26,7 +26,7 @@ public class UserController {
         return new UserSignupResDto("회원가입 완료");
     }
 
-    // TODO LOGIN API
+    // TODO LOGIN & LOGOUT API
 
     @DeleteMapping("/users/resign")
     @Operation(summary = "회원 탈퇴")

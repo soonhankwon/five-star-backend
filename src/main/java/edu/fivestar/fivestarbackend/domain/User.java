@@ -1,5 +1,6 @@
 package edu.fivestar.fivestarbackend.domain;
 
+import edu.fivestar.fivestarbackend.dto.UserSignupReqDto;
 import edu.fivestar.fivestarbackend.util.BaseTimeEntity;
 import lombok.NoArgsConstructor;
 
@@ -20,9 +21,9 @@ public class User extends BaseTimeEntity {
 
     private String password;
 
-    public User(String email, String password, String name) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
+    public User(UserSignupReqDto dto) {
+        this.email = dto.getEmail();
+        this.name = dto.getName();
+        this.password = dto.getPassword();
     }
 }

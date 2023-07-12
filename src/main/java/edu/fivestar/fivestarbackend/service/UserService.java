@@ -1,7 +1,7 @@
 package edu.fivestar.fivestarbackend.service;
 
-import org.springframework.stereotype.Service;
+import edu.fivestar.fivestarbackend.dto.UserSignupReqDto;
 
-@Service
-public class UserService {
+public interface UserService {
+    void signUpUser(UserSignupReqDto dto);
 }

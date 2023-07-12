@@ -22,10 +22,10 @@ public class UserController {
     @PostMapping("/users/signup")
     @Operation(summary = "회원 가입")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserSignupResDto signUpUser(@RequestBody UserSignupReqDto dto) {
-        userServiceImpl.signUpUser(dto);
+    public UserSignupResDto signupUser(@RequestBody UserSignupReqDto dto) {
+        userServiceImpl.signupUser(dto);
         return new UserSignupResDto("회원가입 완료");
     }
 
-    
+
 }

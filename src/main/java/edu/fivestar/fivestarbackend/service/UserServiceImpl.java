@@ -12,7 +12,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public void signUpUser(UserSignupReqDto dto) {
+    public void signupUser(UserSignupReqDto dto) {
         userRepository.save(new User(dto));
     }
 }

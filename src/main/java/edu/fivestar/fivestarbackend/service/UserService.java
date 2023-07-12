@@ -3,5 +3,5 @@ package edu.fivestar.fivestarbackend.service;
 import edu.fivestar.fivestarbackend.dto.UserSignupReqDto;
 
 public interface UserService {
-    void signUpUser(UserSignupReqDto dto);
+    void signupUser(UserSignupReqDto dto);
 }

@@ -33,6 +33,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
+    public UserPostGetResDto getPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("post id invalid"));
+        return post.createUserPostGetResDto();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<UserPostGetResDto> getPostsByUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("user email invalid"));

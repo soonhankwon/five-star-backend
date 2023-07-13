@@ -12,4 +12,5 @@ public interface PostService {
     List<UserPostGetResDto> getPostsByUser(Long userId);
     void updatePost(Long userId, Long postId, PostUpdateReqDto dto);
     void deletePost(Long userId, Long postId);
+    UserPostGetResDto getPost(Long postId);
 }

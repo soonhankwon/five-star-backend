@@ -33,6 +33,13 @@ public class PostController {
         return postServiceImpl.getPostsByUser(userId);
     }
 
+    @GetMapping("/{postId}/detail")
+    @Operation(summary = "포스트 상세 조회 API")
+    @ResponseStatus(HttpStatus.OK)
+    public UserPostGetResDto getPost(@PathVariable Long postId) {
+        return postServiceImpl.getPost(postId);
+    }
+
     @PatchMapping("/{userId}/{postId}")
     @Operation(summary = "유저 포스트 수정 API")
     @ResponseStatus(HttpStatus.OK)

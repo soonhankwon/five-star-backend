@@ -23,9 +23,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void createPost(PostCreateReqDto dto) {
+    public void createPost(Long userId, PostCreateReqDto dto) {
         //TODO Login 구현 후 수정 필요
-        User user = userRepository.findUserByEmail(dto.getEmail())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("user email invalid"));
         Post post = new Post(dto, user);
         postRepository.save(post);

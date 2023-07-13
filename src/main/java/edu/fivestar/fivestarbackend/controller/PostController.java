@@ -18,11 +18,11 @@ public class PostController {
 
     private final PostService postServiceImpl;
 
-    @PostMapping
+    @PostMapping("/{userId}")
     @Operation(summary = "포스트 생성 API")
     @ResponseStatus(HttpStatus.CREATED)
-    public PostCreateResDto createPost(@RequestBody PostCreateReqDto dto) {
-        postServiceImpl.createPost(dto);
+    public PostCreateResDto createPost(@PathVariable Long userId, @RequestBody PostCreateReqDto dto) {
+        postServiceImpl.createPost(userId, dto);
         return new PostCreateResDto();
     }
 

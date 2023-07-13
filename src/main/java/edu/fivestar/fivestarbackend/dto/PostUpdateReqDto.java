@@ -6,9 +6,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-@Schema(description = "포스트 업데이트 REQUEST DTO")
+@Schema(description = "포스트 업데이트 요청 DTO")
 public class PostUpdateReqDto {
 
+    @Schema(description = "포스트 제목", example = "새로운 제목")
     private String title;
+
+    @Schema(description = "포스트 내용", example = "새로운 내용")
     private String content;
 }

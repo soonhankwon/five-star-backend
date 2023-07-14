@@ -16,3 +16,5 @@ five star backend repo
 - AWS EC2
 - Docker
 - GitHub Actions(CD)
+
+## 프로젝트 설명

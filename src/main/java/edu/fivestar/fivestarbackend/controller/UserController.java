@@ -1,15 +1,20 @@
 package edu.fivestar.fivestarbackend.controller;
 
+import edu.fivestar.fivestarbackend.domain.User;
 import edu.fivestar.fivestarbackend.dto.UserResignReqDto;
 import edu.fivestar.fivestarbackend.dto.UserResignResDto;
-import edu.fivestar.fivestarbackend.dto.UserSignupResDto;
 import edu.fivestar.fivestarbackend.dto.UserSignupReqDto;
+import edu.fivestar.fivestarbackend.dto.UserSignupResDto;
 import edu.fivestar.fivestarbackend.service.UserService;
+import edu.fivestar.fivestarbackend.web.session.SessionConst;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,13 +32,15 @@ public class UserController {
         return new UserSignupResDto();
     }
 
-    // TODO LOGIN & LOGOUT API
-
     @DeleteMapping("/resign")
     @Operation(summary = "회원 탈퇴 API")
     @ResponseStatus(HttpStatus.OK)
-    public UserResignResDto resignUser(@RequestBody UserResignReqDto dto) {
-        userServiceImpl.resignUser(dto);
+    public UserResignResDto resignUser(@RequestBody UserResignReqDto dto, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
+
+        userServiceImpl.resignUser(dto, loginUser);
+        session.invalidate();
         return new UserResignResDto();
     }
 }

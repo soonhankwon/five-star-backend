@@ -6,7 +6,6 @@ import edu.fivestar.fivestarbackend.dto.PostCreateReqDto;
 import edu.fivestar.fivestarbackend.dto.PostUpdateReqDto;
 import edu.fivestar.fivestarbackend.dto.UserPostGetResDto;
 import edu.fivestar.fivestarbackend.repository.PostRepository;
-import edu.fivestar.fivestarbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,15 +18,11 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
 
     @Override
     @Transactional
-    public void createPost(Long userId, PostCreateReqDto dto) {
-        //TODO Login 구현 후 수정 필요
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("user email invalid"));
-        Post post = new Post(dto, user);
+    public void createPost(User loginUser, PostCreateReqDto dto) {
+        Post post = new Post(dto, loginUser);
         postRepository.save(post);
     }
 
@@ -41,11 +36,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserPostGetResDto> getPostsByUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("user email invalid"));
-
-        return postRepository.findPostsByUser(user)
+    public List<UserPostGetResDto> getPostsByUser(User loginUser) {
+        return postRepository.findPostsByUser(loginUser)
                 .stream()
                 .map(Post::createUserPostGetResDto)
                 .collect(Collectors.toList());
@@ -53,25 +45,17 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void updatePost(Long userId, Long postId, PostUpdateReqDto dto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("user email invalid"));
-
-        Post post = postRepository.findPostByUserAndId(user, postId)
+    public void updatePost(User loginUser, Long postId, PostUpdateReqDto dto) {
+        Post post = postRepository.findPostByUserAndId(loginUser, postId)
                 .orElseThrow(() -> new IllegalArgumentException("no post"));
-
         post.update(dto);
     }
 
     @Override
     @Transactional
-    public void deletePost(Long userId, Long postId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("invalid user id"));
-
-        Post post = postRepository.findPostByUserAndId(user, postId)
+    public void deletePost(User loginUser, Long postId) {
+        Post post = postRepository.findPostByUserAndId(loginUser, postId)
                 .orElseThrow(() -> new IllegalArgumentException("invalid post"));
-
         postRepository.delete(post);
     }
 }

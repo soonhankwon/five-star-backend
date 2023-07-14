@@ -11,3 +11,8 @@ five star backend repo
 - MySQL 8.0.33
 - Spring data jpa
 - Swagger 3.0
+
+## Infra
+- AWS EC2
+- Docker
+- GitHub Actions(CD)

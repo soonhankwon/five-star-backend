@@ -26,7 +26,7 @@ public class LoginServiceImpl implements LoginService {
             throw  new IllegalArgumentException("email or password invalid");
         }
         HttpSession session = request.getSession();
-        log.info("login user {}", loginUser);
+        log.info("login {}", loginUser);
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
     }
 

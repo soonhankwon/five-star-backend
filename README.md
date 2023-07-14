@@ -8,6 +8,6 @@ five star backend repo
 - Java 11
 - SpringBoot 2.7.13
 - Gradle
-- MySQL
+- MySQL 8.0.33
 - Spring data jpa
 - Swagger 3.0

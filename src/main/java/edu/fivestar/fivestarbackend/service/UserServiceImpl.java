@@ -5,9 +5,11 @@ import edu.fivestar.fivestarbackend.dto.UserResignReqDto;
 import edu.fivestar.fivestarbackend.dto.UserSignupReqDto;
 import edu.fivestar.fivestarbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,9 +24,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void resignUser(UserResignReqDto dto) {
-        User user = userRepository.findUserByEmail(dto.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException());
-        userRepository.delete(user);
+    public void resignUser(UserResignReqDto dto, User loginUser) {
+        log.info("resign ={}", loginUser);
+        if (loginUser.isPasswordValid(dto.getPassword()))
+            userRepository.delete(loginUser);
+        else
+            throw new IllegalArgumentException("password invalid");
     }
 }

@@ -18,3 +18,5 @@ five star backend repo
 - GitHub Actions(CD)
 
 ## 프로젝트 설명
+
+## Trouble Shooting

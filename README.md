@@ -20,3 +20,4 @@ five star backend repo
 ## 프로젝트 설명
 
 ## Trouble Shooting
+- EC2 인스턴스 MySQL Timezone utc 저장 이슈

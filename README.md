@@ -22,3 +22,4 @@ five star backend repo
 ## Trouble Shooting
 - EC2 인스턴스 MySQL Timezone utc 저장 이슈
   - application default system -> TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+  - spring.jpa.properties.hibernate.jdbc.time_zone=Asia/Seoul

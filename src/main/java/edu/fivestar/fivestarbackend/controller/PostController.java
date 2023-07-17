@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,11 +35,11 @@ public class PostController {
     }
 
     @GetMapping
-    @Operation(summary = "유저 포스트 전체 조회 API")
+    @Operation(summary = "유저 포스트 전체 조회 API", description = "?page=0&size=10&sort=id,DESC' page, size 페이지네이션, sort 정렬이 가능합니다.")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserPostGetResDto> getPostsByUser(HttpServletRequest request) {
+    public List<UserPostGetResDto> getPostsByUser(HttpServletRequest request, Pageable pageable) {
         User loginUser = getLoginUserBySession(request);
-        return postServiceImpl.getPostsByUser(loginUser);
+        return postServiceImpl.getPostsByUser(loginUser, pageable);
     }
 
     @GetMapping("/{postId}")

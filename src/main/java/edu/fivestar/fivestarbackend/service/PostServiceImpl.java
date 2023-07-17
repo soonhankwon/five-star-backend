@@ -7,6 +7,7 @@ import edu.fivestar.fivestarbackend.dto.PostUpdateReqDto;
 import edu.fivestar.fivestarbackend.dto.UserPostGetResDto;
 import edu.fivestar.fivestarbackend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +37,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserPostGetResDto> getPostsByUser(User loginUser) {
-        return postRepository.findPostsByUser(loginUser)
+    public List<UserPostGetResDto> getPostsByUser(User loginUser, Pageable pageable) {
+        return postRepository.findPostsByUser(loginUser, pageable)
                 .stream()
                 .map(Post::createUserPostGetResDto)
                 .collect(Collectors.toList());

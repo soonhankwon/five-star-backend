@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.http.HttpSession;
+
 @Slf4j
 @RestControllerAdvice
 public class ExControllerAdvice {
@@ -14,17 +16,17 @@ public class ExControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
     public ErrorResult illegalExHandle(IllegalArgumentException e) {
-        return new ErrorResult("BAD", e.getMessage());
+        return new ErrorResult(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler
     public ErrorResult sessionExHandle(HttpSessionRequiredException e) {
-        return new ErrorResult("INVALID SESSION", e.getMessage());
+        return new ErrorResult(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResult exHandle(Exception e) {
-        return new ErrorResult("EX", "내부 오류");
+        return new ErrorResult(HttpStatus.INTERNAL_SERVER_ERROR, "내부 오류");
     }
 }

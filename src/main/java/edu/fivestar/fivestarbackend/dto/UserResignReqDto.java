@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "유저 탈퇴 요청 DTO")
-public class UserResignReqDto {
+public final class UserResignReqDto {
 
     @Schema(description = "유저 패스워드", example = "password123")
     private String password;

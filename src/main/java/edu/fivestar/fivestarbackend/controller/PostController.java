@@ -31,7 +31,9 @@ public class PostController {
     @Operation(summary = "포스트 생성 API")
     @ResponseStatus(HttpStatus.CREATED)
     public PostCreateResDto createPost(@RequestBody PostCreateReqDto dto, HttpServletRequest request) {
-        User loginUser = getLoginUserBySession(request);
+//        User loginUser = getLoginUserBySession(request);
+        UserSignupReqDto userDto = new UserSignupReqDto("abc", "abc", "abc");
+        User loginUser = new User(userDto);
         postServiceImpl.createPost(loginUser, dto);
         return new PostCreateResDto();
     }

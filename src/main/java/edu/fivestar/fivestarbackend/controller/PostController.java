@@ -2,6 +2,7 @@ package edu.fivestar.fivestarbackend.controller;
 
 import edu.fivestar.fivestarbackend.domain.User;
 import edu.fivestar.fivestarbackend.dto.*;
+import edu.fivestar.fivestarbackend.repository.UserRepository;
 import edu.fivestar.fivestarbackend.service.PostService;
 import edu.fivestar.fivestarbackend.web.session.SessionConst;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,14 +27,14 @@ import java.util.List;
 public class PostController {
 
     private final PostService postServiceImpl;
+    private final UserRepository userRepository;
 
     @PostMapping
     @Operation(summary = "포스트 생성 API")
     @ResponseStatus(HttpStatus.CREATED)
     public PostCreateResDto createPost(@RequestBody PostCreateReqDto dto, HttpServletRequest request) {
 //        User loginUser = getLoginUserBySession(request);
-        UserSignupReqDto userDto = new UserSignupReqDto("abc", "abc", "abc");
-        User loginUser = new User(userDto);
+        User loginUser = userRepository.findUserByEmail("abcd@naver.com").orElse(null);
         postServiceImpl.createPost(loginUser, dto);
         return new PostCreateResDto();
     }

@@ -9,7 +9,7 @@ class LoginResDtoTest {
 
     @Test
     @DisplayName("DTO 생성 & getter 메세지 검증")
-    void createDto() {
+    void getMessage() {
         LoginResDto dto = new LoginResDto();
 
         assertThat(dto).isNotNull();

@@ -28,7 +28,6 @@ public class LoginController {
     @ResponseStatus(HttpStatus.OK)
     public LoginResDto login(@Validated @RequestBody LoginReqDto dto, HttpServletRequest request) {
         loginServiceImpl.login(dto, request);
-
         return new LoginResDto();
     }
 

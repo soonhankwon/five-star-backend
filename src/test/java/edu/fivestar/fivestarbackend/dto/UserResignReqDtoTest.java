@@ -12,6 +12,7 @@ class UserResignReqDtoTest {
     @DisplayName("getter 패스워드 테스트")
     void getPassword() {
         UserResignReqDto dto = new UserResignReqDto("1234");
+        assertThat(dto).isNotNull();
         assertThat(dto.getPassword()).isEqualTo("1234");
     }
 }

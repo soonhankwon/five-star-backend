@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +45,8 @@ public class PostController {
     @ResponseStatus(HttpStatus.OK)
     public List<UserPostGetResDto> getPostsByUser(HttpServletRequest request,
                                                   @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        User loginUser = getLoginUserBySession(request);
+//        User loginUser = getLoginUserBySession(request);
+        User loginUser = userRepository.findUserByEmail("abcd@naver.com").orElse(null);
         return postServiceImpl.getPostsByUser(loginUser, pageable);
     }
 
@@ -76,9 +78,12 @@ public class PostController {
 
     private User getLoginUserBySession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
+        if(session == null) {
+            throw new RuntimeException("session disconnected or login plz");
+        }
         User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
-        if (loginUser == null) {
-            throw new RuntimeException("session disconnected");
+        if(loginUser == null) {
+            throw new RuntimeException("session attribute invalid");
         }
         return loginUser;
     }

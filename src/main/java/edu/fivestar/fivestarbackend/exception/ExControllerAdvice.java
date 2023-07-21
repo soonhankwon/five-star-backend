@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.servlet.http.HttpSession;
-
 @Slf4j
 @RestControllerAdvice
 public class ExControllerAdvice {
@@ -16,6 +14,12 @@ public class ExControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
     public ErrorResult illegalExHandle(IllegalArgumentException e) {
+        return new ErrorResult(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler
+    public ErrorResult runtimeExHandle(RuntimeException e) {
         return new ErrorResult(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 

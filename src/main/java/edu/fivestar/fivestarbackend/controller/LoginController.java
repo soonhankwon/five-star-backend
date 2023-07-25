@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,5 +34,12 @@ public class LoginController {
     public LogoutResDto logout(HttpServletRequest request) {
         loginServiceImpl.logout(request);
         return new LogoutResDto();
+    }
+
+    @GetMapping("/login/check")
+    @Operation(summary = "로그인 체크 API")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean loginCheck(HttpServletRequest request) {
+        return loginServiceImpl.loginCheck(request);
     }
 }

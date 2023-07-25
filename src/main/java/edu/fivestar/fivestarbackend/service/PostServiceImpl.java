@@ -48,7 +48,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void updatePost(User loginUser, Long postId, PostUpdateReqDto dto) {
         Post post = postRepository.findPostByUserAndId(loginUser, postId)
-                .orElseThrow(() -> new IllegalArgumentException("no post"));
+                .orElseThrow(() -> new IllegalArgumentException("no post by user"));
         post.update(dto);
     }
 

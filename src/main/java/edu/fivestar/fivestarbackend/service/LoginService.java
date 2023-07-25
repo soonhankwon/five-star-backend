@@ -7,5 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 public interface LoginService {
 
     void login(LoginReqDto dto, HttpServletRequest request);
+
     void logout(HttpServletRequest request);
+
+    boolean loginCheck(HttpServletRequest request);
 }

@@ -29,6 +29,10 @@ public class User extends BaseTimeEntity {
         this.password = dto.getPassword();
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     public boolean isPasswordValid(String password) {
         return this.password.equals(password);
     }

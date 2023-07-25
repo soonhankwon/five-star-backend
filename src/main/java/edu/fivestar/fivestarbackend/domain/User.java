@@ -33,7 +33,7 @@ public class User extends BaseTimeEntity {
         return this.id;
     }
 
-    public boolean isPasswordValid(String password) {
-        return this.password.equals(password);
+    public String getPassword() {
+        return this.password;
     }
 }

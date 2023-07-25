@@ -37,8 +37,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserPostGetResDto> getPostsByUser(User loginUser, Pageable pageable) {
-        return postRepository.findPostsByUser(loginUser, pageable)
+    public List<UserPostGetResDto> getAllPosts(Pageable pageable) {
+        return postRepository.findAll(pageable)
                 .stream()
                 .map(Post::createUserPostGetResDto)
                 .collect(Collectors.toList());
@@ -56,7 +56,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void deletePost(User loginUser, Long postId) {
         Post post = postRepository.findPostByUserAndId(loginUser, postId)
-                .orElseThrow(() -> new IllegalArgumentException("invalid post"));
+                .orElseThrow(() -> new IllegalArgumentException("no auth to delete post"));
         postRepository.delete(post);
     }
 }

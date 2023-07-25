@@ -6,7 +6,7 @@ import edu.fivestar.fivestarbackend.dto.UserResignResDto;
 import edu.fivestar.fivestarbackend.dto.UserSignupReqDto;
 import edu.fivestar.fivestarbackend.dto.UserSignupResDto;
 import edu.fivestar.fivestarbackend.service.UserService;
-import edu.fivestar.fivestarbackend.web.session.SessionConst;
+import edu.fivestar.fivestarbackend.web.session.SessionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,6 +23,7 @@ import javax.servlet.http.HttpSession;
 public class UserController {
 
     private final UserService userServiceImpl;
+    private final SessionService sessionService;
 
     @PostMapping("/signup")
     @Operation(summary = "회원 가입 API")
@@ -37,11 +37,9 @@ public class UserController {
     @Operation(summary = "회원 탈퇴 API")
     @ResponseStatus(HttpStatus.OK)
     public UserResignResDto resignUser(@RequestBody UserResignReqDto dto, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
-
+        User loginUser = sessionService.getLoginUserBySession(request);
         userServiceImpl.resignUser(dto, loginUser);
-        session.invalidate();
+        sessionService.expireSession(request);
         return new UserResignResDto();
     }
 }

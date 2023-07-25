@@ -11,8 +11,12 @@ import java.util.List;
 public interface PostService {
 
     void createPost(User loginUser, PostCreateReqDto dto);
-    List<UserPostGetResDto> getPostsByUser(User loginUser, Pageable pageable);
+
+    List<UserPostGetResDto> getAllPosts(Pageable pageable);
+
     void updatePost(User loginUser, Long postId, PostUpdateReqDto dto);
+
     void deletePost(User loginUser, Long postId);
+
     UserPostGetResDto getPost(Long postId);
 }

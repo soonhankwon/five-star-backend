@@ -10,12 +10,14 @@ import edu.fivestar.fivestarbackend.web.session.SessionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
@@ -28,10 +30,20 @@ public class UserController {
     @PostMapping("/signup")
     @Operation(summary = "회원 가입 API")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserSignupResDto signupUser(@Validated @RequestBody UserSignupReqDto dto) {
+    public UserSignupResDto signupUser(@Validated @RequestBody UserSignupReqDto dto, BindingResult bindingResult) {
+//        if(bindingResult.hasErrors()){
+//            return ?
+//        }
+//        if (!dto.getPassword().equals(dto.getConfirmPassword())){
+//            bindingResult.reject("passwordConfirmFail","비밀번호와 같지 않습니다.");
+//            return ?
+//        }
         userServiceImpl.signupUser(dto);
+        log.info("signup: email{} name{}",dto.getEmail(),dto.getName());
         return new UserSignupResDto();
     }
+
+
 
     @DeleteMapping("/resign")
     @Operation(summary = "회원 탈퇴 API")

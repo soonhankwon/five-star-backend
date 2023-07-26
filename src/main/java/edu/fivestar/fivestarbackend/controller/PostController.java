@@ -37,7 +37,8 @@ public class PostController {
     }
 
     @GetMapping
-    @Operation(summary = "포스트 전체 조회 API", description = "ex) ?page=0&size=10&sort=id,DESC' => page, size 페이지네이션, sort 정렬이 가능, query param size, sort 생략시 기본값 size 10, sort id,DESC")
+    @Operation(summary = "포스트 전체 조회 API", description = "ex) ?page=0&size=10&sort=id,DESC' => page, size 페이지네이션, sort 정렬이 가능, query param size, sort 생략시 기본값 size 10, sort id,DESC" +
+            " : sort 사용 가능 params = user, title")
     @ResponseStatus(HttpStatus.OK)
     public List<UserPostGetResDto> getAllPosts(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return postServiceImpl.getAllPosts(pageable);

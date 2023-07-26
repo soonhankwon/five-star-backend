@@ -31,7 +31,7 @@ public class Post extends BaseTimeEntity {
     }
 
     public UserPostGetResDto createUserPostGetResDto() {
-        return new UserPostGetResDto(this.id, this.title, this.content, this.getCreatedAt(), this.getModifiedAt());
+        return new UserPostGetResDto(this.id, this.title, this.content, this.getCreatedAt(), this.getModifiedAt(), this.user.getName());
     }
 
     public void update(PostUpdateReqDto dto) {

@@ -33,6 +33,10 @@ public class User extends BaseTimeEntity {
         return this.id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getPassword() {
         return this.password;
     }

@@ -9,12 +9,17 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @Slf4j
 public class LoginCheckInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if(isPreflightRequest(request)) {
+            return true;
+        }
+
         String requestURI = request.getRequestURI();
 
         if(request.getMethod().equals(HttpMethod.GET.name()) && requestURI.contains("/posts")) {
@@ -30,5 +35,25 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             throw new HttpSessionRequiredException("session expired or login plz");
         }
         return true;
+    }
+
+    private boolean isPreflightRequest(HttpServletRequest request) {
+        return isOptions(request) && hasHeaders(request) && hasMethod(request) && hasOrigin(request);
+    }
+
+    private boolean isOptions(HttpServletRequest request) {
+        return request.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS.toString());
+    }
+
+    private boolean hasHeaders(HttpServletRequest request) {
+        return Objects.nonNull(request.getHeader("Access-Control-Request-Headers"));
+    }
+
+    private boolean hasMethod(HttpServletRequest request) {
+        return Objects.nonNull(request.getHeader("Access-Control-Request-Method"));
+    }
+
+    private boolean hasOrigin(HttpServletRequest request) {
+        return Objects.nonNull(request.getHeader("Origin"));
     }
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -22,6 +23,10 @@ public class User extends BaseTimeEntity {
     private String name;
 
     private String password;
+
+    //TODO N+1
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> post;
 
     public User(UserSignupReqDto dto) {
         this.email = dto.getEmail();

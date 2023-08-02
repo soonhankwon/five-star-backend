@@ -86,8 +86,8 @@ public class PostController {
     @GetMapping("/users/info")
     @Operation(summary = "포스트 작성 유저 정보 조회 API")
     @ResponseStatus(HttpStatus.OK)
-    public List<PostUserInfoResDto> getPostsUsers() {
-        return postServiceImpl.getPostsUsers();
+    public List<PostUserInfoResDto> getPostsUsersInfo() {
+        return postServiceImpl.getPostsUsersInfo();
     }
 
     @GetMapping("/users")

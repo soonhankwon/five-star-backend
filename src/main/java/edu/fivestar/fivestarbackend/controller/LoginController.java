@@ -1,10 +1,10 @@
 package edu.fivestar.fivestarbackend.controller;
 
+import edu.fivestar.fivestarbackend.dto.GlobalResDto;
 import edu.fivestar.fivestarbackend.dto.LoginReqDto;
-import edu.fivestar.fivestarbackend.dto.LoginResDto;
-import edu.fivestar.fivestarbackend.dto.LogoutResDto;
 import edu.fivestar.fivestarbackend.service.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,18 +22,20 @@ public class LoginController {
 
     @PostMapping("/login")
     @Operation(summary = "로그인 API")
+    @ApiResponse(responseCode = "200", description = "로그인 완료")
     @ResponseStatus(HttpStatus.OK)
-    public LoginResDto login(@Validated @RequestBody LoginReqDto dto, HttpServletRequest request) {
+    public GlobalResDto login(@Validated @RequestBody LoginReqDto dto, HttpServletRequest request) {
         loginServiceImpl.login(dto, request);
-        return new LoginResDto();
+        return new GlobalResDto("로그인 완료");
     }
 
     @PostMapping("/logout")
     @Operation(summary = "로그아웃 API")
+    @ApiResponse(responseCode = "200", description = "로그아웃 완료")
     @ResponseStatus(HttpStatus.OK)
-    public LogoutResDto logout(HttpServletRequest request) {
+    public GlobalResDto logout(HttpServletRequest request) {
         loginServiceImpl.logout(request);
-        return new LogoutResDto();
+        return new GlobalResDto("로그아웃 완료");
     }
 
     @GetMapping("/login/check")

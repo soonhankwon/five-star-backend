@@ -1,9 +1,11 @@
 package edu.fivestar.fivestarbackend.domain;
 
+import edu.fivestar.fivestarbackend.dto.PostUserInfoResDto;
 import edu.fivestar.fivestarbackend.dto.UserSignupReqDto;
 import edu.fivestar.fivestarbackend.util.BaseTimeEntity;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,7 +26,7 @@ public class User extends BaseTimeEntity {
 
     private String password;
 
-    //TODO N+1
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> post;
 
@@ -44,5 +46,9 @@ public class User extends BaseTimeEntity {
 
     public String getPassword() {
         return this.password;
+    }
+
+    public PostUserInfoResDto addUserInfo() {
+        return new PostUserInfoResDto(this.email, this.name);
     }
 }

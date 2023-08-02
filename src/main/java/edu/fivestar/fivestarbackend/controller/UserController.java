@@ -1,13 +1,13 @@
 package edu.fivestar.fivestarbackend.controller;
 
 import edu.fivestar.fivestarbackend.domain.User;
+import edu.fivestar.fivestarbackend.dto.GlobalResDto;
 import edu.fivestar.fivestarbackend.dto.UserResignReqDto;
-import edu.fivestar.fivestarbackend.dto.UserResignResDto;
 import edu.fivestar.fivestarbackend.dto.UserSignupReqDto;
-import edu.fivestar.fivestarbackend.dto.UserSignupResDto;
 import edu.fivestar.fivestarbackend.service.UserService;
 import edu.fivestar.fivestarbackend.web.session.SessionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,22 +28,24 @@ public class UserController {
 
     @PostMapping("/signup")
     @Operation(summary = "회원 가입 API")
+    @ApiResponse(responseCode = "201", description = "회원 가입 완료")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserSignupResDto signupUser(@Validated @RequestBody UserSignupReqDto dto) {
+    public GlobalResDto signupUser(@Validated @RequestBody UserSignupReqDto dto) {
         userServiceImpl.signupUser(dto);
         log.info("signup: email{} name{}",dto.getEmail(),dto.getName());
-        return new UserSignupResDto();
+        return new GlobalResDto("회원 가입 완료");
     }
 
 
 
     @DeleteMapping("/resign")
     @Operation(summary = "회원 탈퇴 API")
+    @ApiResponse(responseCode = "200", description = "회원 탈퇴 완료")
     @ResponseStatus(HttpStatus.OK)
-    public UserResignResDto resignUser(@RequestBody UserResignReqDto dto, HttpServletRequest request) {
+    public GlobalResDto resignUser(@RequestBody UserResignReqDto dto, HttpServletRequest request) {
         User loginUser = sessionService.getLoginUserBySession(request);
         userServiceImpl.resignUser(dto, loginUser);
         sessionService.expireSession(request);
-        return new UserResignResDto();
+        return new GlobalResDto("회원 탈퇴 완료");
     }
 }

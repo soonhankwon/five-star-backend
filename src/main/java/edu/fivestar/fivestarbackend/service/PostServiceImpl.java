@@ -4,8 +4,10 @@ import edu.fivestar.fivestarbackend.domain.Post;
 import edu.fivestar.fivestarbackend.domain.User;
 import edu.fivestar.fivestarbackend.dto.PostCreateReqDto;
 import edu.fivestar.fivestarbackend.dto.PostUpdateReqDto;
+import edu.fivestar.fivestarbackend.dto.PostUserInfoResDto;
 import edu.fivestar.fivestarbackend.dto.UserPostGetResDto;
 import edu.fivestar.fivestarbackend.repository.PostRepository;
+import edu.fivestar.fivestarbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -32,7 +35,7 @@ public class PostServiceImpl implements PostService {
     public UserPostGetResDto getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("post id invalid"));
-        return post.createUserPostGetResDto();
+        return post.ofUserPostGetResDto();
     }
 
     @Override
@@ -40,7 +43,33 @@ public class PostServiceImpl implements PostService {
     public List<UserPostGetResDto> getAllPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .stream()
-                .map(Post::createUserPostGetResDto)
+                .map(Post::ofUserPostGetResDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Integer getTotalPostsNumber() {
+        return postRepository.findAll().size();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PostUserInfoResDto> getPostsUsersInfo() {
+        List<Post> posts = postRepository.findSinglePostPerUser();
+
+        return posts.stream()
+                .map(Post::ofPostUserResDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserPostGetResDto> getAllPostsByUsername(String username) {
+        List<User> users = userRepository.findUsersByName(username);
+
+        return users.stream()
+                .map(postRepository::findPostsByUser)
+                .flatMap(List::stream)
+                .map(Post::ofUserPostGetResDto)
                 .collect(Collectors.toList());
     }
 

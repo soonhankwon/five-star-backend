@@ -2,6 +2,7 @@ package edu.fivestar.fivestarbackend.domain;
 
 import edu.fivestar.fivestarbackend.dto.PostCreateReqDto;
 import edu.fivestar.fivestarbackend.dto.PostUpdateReqDto;
+import edu.fivestar.fivestarbackend.dto.PostUserInfoResDto;
 import edu.fivestar.fivestarbackend.dto.UserPostGetResDto;
 import edu.fivestar.fivestarbackend.util.BaseTimeEntity;
 import lombok.NoArgsConstructor;
@@ -32,8 +33,8 @@ public class Post extends BaseTimeEntity {
         this.imageURL = dto.getImageURL();
     }
 
-    public UserPostGetResDto createUserPostGetResDto() {
-        return new UserPostGetResDto(this.id, this.title, this.content, this.getCreatedAt(), this.getModifiedAt());
+    public UserPostGetResDto ofUserPostGetResDto() {
+        return new UserPostGetResDto(this.id, this.title, this.content, this.getCreatedAt(), this.getModifiedAt(), this.user.getName());
     }
 
     public void update(PostUpdateReqDto dto) {
@@ -41,5 +42,9 @@ public class Post extends BaseTimeEntity {
             this.title = dto.getTitle();
         }
         this.content = dto.getContent();
+    }
+
+    public PostUserInfoResDto ofPostUserResDto() {
+        return user.addUserInfo();
     }
 }

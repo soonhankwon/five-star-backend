@@ -25,4 +25,7 @@ public class UserPostGetResDto {
 
     @Schema(description = "포스트 수정일자", example = "2023-07-17T17:56:26.643536")
     private final LocalDateTime modifiedAt;
+
+    @Schema(description = "포스트 작성자 이름", example = "Tom")
+    private final String author;
 }

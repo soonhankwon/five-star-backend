@@ -3,6 +3,7 @@ package edu.fivestar.fivestarbackend.service;
 import edu.fivestar.fivestarbackend.domain.User;
 import edu.fivestar.fivestarbackend.dto.PostCreateReqDto;
 import edu.fivestar.fivestarbackend.dto.PostUpdateReqDto;
+import edu.fivestar.fivestarbackend.dto.PostUserInfoResDto;
 import edu.fivestar.fivestarbackend.dto.UserPostGetResDto;
 import org.springframework.data.domain.Pageable;
 
@@ -19,4 +20,10 @@ public interface PostService {
     void deletePost(User loginUser, Long postId);
 
     UserPostGetResDto getPost(Long postId);
+
+    Integer getTotalPostsNumber();
+
+    List<PostUserInfoResDto> getPostsUsersInfo();
+
+    List<UserPostGetResDto> getAllPostsByUsername(String username);
 }

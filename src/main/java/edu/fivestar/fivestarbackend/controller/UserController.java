@@ -30,8 +30,14 @@ public class UserController {
     @PostMapping("/signup")
     @Operation(summary = "회원 가입 API")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserSignupResDto signupUser(@Validated @RequestBody UserSignupReqDto dto ) {
-
+    public UserSignupResDto signupUser(@Validated @RequestBody UserSignupReqDto dto, BindingResult bindingResult) {
+//        if(bindingResult.hasErrors()){
+//            return ?
+//        }
+//        if (!dto.getPassword().equals(dto.getConfirmPassword())){
+//            bindingResult.reject("passwordConfirmFail","비밀번호와 같지 않습니다.");
+//            return ?
+//        }
         userServiceImpl.signupUser(dto);
         log.info("signup: email{} name{}",dto.getEmail(),dto.getName());
         return new UserSignupResDto();

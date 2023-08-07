@@ -3,6 +3,7 @@ package edu.fivestar.fivestarbackend.web.interceptor;
 import edu.fivestar.fivestarbackend.web.session.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -32,7 +33,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         if(session == null || !request.isRequestedSessionIdValid() || session.getAttribute(SessionConst.LOGIN_USER) == null) {
             log.info("미인증 사용자 요청");
-            throw new HttpSessionRequiredException("session expired or login plz");
+            response.sendRedirect("/login");
+            return false;
+//            throw new HttpSessionRequiredException("session expired or login plz");
         }
         return true;
     }

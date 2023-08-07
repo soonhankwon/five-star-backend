@@ -19,6 +19,7 @@ public class Post extends BaseTimeEntity {
     private String title;
 
     private String content;
+    private String imageURL;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
@@ -28,6 +29,7 @@ public class Post extends BaseTimeEntity {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.user = user;
+        this.imageURL = dto.getImageURL();
     }
 
     public UserPostGetResDto createUserPostGetResDto() {

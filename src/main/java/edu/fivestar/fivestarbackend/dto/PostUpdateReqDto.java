@@ -18,4 +18,8 @@ public class PostUpdateReqDto {
     @NotEmpty
     @Schema(description = "포스트 내용", example = "새로운 내용")
     private String content;
+
+    @NotEmpty
+    @Schema(description = "이미지 URL", example = "./img/panda.jpg")
+    private final String imageURL;
 }

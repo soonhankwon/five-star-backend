@@ -16,4 +16,8 @@ public final class PostCreateReqDto {
     @NotEmpty
     @Schema(description = "포스트 내용", example = "객체지향언어이다")
     private final String content;
+    @NotEmpty
+    @Schema(description = "이미지 URL", example = "./img/panda.jpg")
+    private final String imageURL;
+
 }
